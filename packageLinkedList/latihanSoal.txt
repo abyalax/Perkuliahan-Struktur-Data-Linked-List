@@ -1,0 +1,269 @@
+4.1	Misalkan anda memiliki angka acak 6, 90, 3, 33, 11. Bagaimana cara melakukan insert pada single linked list sehingga diperoleh hasil “ 33→ 6 → 90 → 3 →  11“ ? Sertakan code dan analisanya.
+
+Code untuk method insert Linked List
+
+public class Method {
+    public void insertHead(SingleLinkedList list, int data) {
+        insertN(list, data, 0); // x element to be added
+    }
+    public void checkBounds(int position, int low, int high) {
+        if (position > high || position < low) {
+            throw new IndexOutOfBoundsException(position + "");
+        }
+    }
+    public void insertN(SingleLinkedList listParam, int data, int position) {
+        checkBounds(position, 0, listParam.size);
+        Nodes newNode = new Nodes(data);
+        if (listParam.head == null) {
+            listParam.head = newNode;
+        } else {
+            Nodes current = listParam.head;
+            while (current.next != null) {
+                current = current.next;
+            }
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+        listParam.size++;
+    }
+}
+
+Source Code main class untuk menjalankan program
+
+public class MainClass {
+    public static void main(String[] args) {
+        System.out.println("ready boss");
+        SingleLinkedList myLinkedList = new SingleLinkedList(null);
+        Method method = new Method();
+        method.insertHead(myLinkedList, 11);
+        method.insertHead(myLinkedList, 3);
+        method.insertHead(myLinkedList, 90);
+        method.insertHead(myLinkedList, 6);
+        method.insertHead(myLinkedList, 33);
+        myLinkedList.display();
+        System.out.println("deleteHead");   //2
+        method.deleteHead(myLinkedList);
+        myLinkedList.display();
+
+        System.out.println("deleteTail");   //3
+        method.deleteTail(myLinkedList);
+        myLinkedList.display();
+
+        System.out.println("insertN");      //4
+        method.insertN(myLinkedList, 72, (myLinkedList.size)-2);
+        myLinkedList.display();
+
+        System.out.println("deleteN");      //5
+        method.deleteN(myLinkedList, 2);
+        myLinkedList.display();
+    }
+}
+
+pada code diatas terdapat class Insert yang berisi 3 method, yaitu untuk insertN, insertHead, dan checkBounds. 
+insertN
+insertN berisi method untuk melakukan insert pada urutan ke N disebuah linked list. method ini membawa argumen berupa linkedlist, data dan posisi. Method ini menjalankan fungsi checkbounds untuk memastikan argumen posisi tidak melebihi ambang batas di linked list. Masukkan parameter posisi dan range 0 sampai ukuran list ( dalam hal ini menggunakan size dari linked list yang dibawa argumen ) kedaalam parameter checkbounds.
+
+    checkBounds
+    method checkBounds memiliki parameter posisi dan range ( low dan high ). jika posisi pada parameter melebihi parameter high atau kurang dari parameter low maka program akan melempar fungsi IndexOutOfBoundsException() sehingga program akan berhenti. Jika hasil validasi tersebut false maka program akan tetap dilanjutkan.
+
+jika methode checkbound menghasilkan return False, maka program akan dilanjutkan dengan inisialisasi Node baru ( newNode ) berisi data dari parameter. Jika posisi yang diminta adalah 0 maka tempatkan data pada head linked list, jika tidak maka lakukan perulangan sebanyak posisi dari argumen dikurangi 1. Sebelum kode perulangan, inisialisasi Node current yang berisi Node head dari linked list parameter, tiap perulangan akan memindahkan pointer Node current ke Node selanjutnya sampai pada posisi yang diinginkan. Setelah didapat posisinya maka pindahkan pointer .next ke Node baru ( newNode ). Terakhir tambahkan ukuran size dari linked list dari argumen.
+
+insertHead
+pada soal diatas terdapat beberapa data untuk dimasukkan kedalam linkedlist. Buat method insertHead yang hanya membawa argumen berupa linked list dan data. Didalamnya akan menjalankan fungsi insertN dengan mengisi parameter posisi dengan angka 0 ( posisi head ). Fungsi ini menyembunyikan kerumitan dari method insertN yang harus memasukkan lebih banyak parameter. 
+Jalankan method insertHead di main class dengan mengisikan parameter berupa linked list dan data diatas sesuai dengan urutannya. Berikut implementasi codenya
+
+public class Main {
+    public static void main(String[] args) {
+        SingleLinkedList myLinkedList = new SingleLinkedList(null);
+        Method method = new Method();
+        method.insertHead(myLinkedList, 11);
+        method.insertHead(myLinkedList, 3);
+        method.insertHead(myLinkedList, 90);
+        method.insertHead(myLinkedList, 6);
+        method.insertHead(myLinkedList, 33);
+        System.out.println("Linked List berisi ");
+        myLinkedList.display();
+    }
+}
+
+main class diatas mengharuskan inisalisai class Method karena file class method dipisahkan dengan file main class untuk memudahkan debug dan pengembangannya.
+
+4.2	Berdasarkan jawaban nomor 1, bagaimana source code menghapus node head sehingga diperoleh rangkaian linked list seperti ini “ 6 → 90 → 3 →  11 “ ?
+
+    Source Code untuk method deleteHead
+
+    public void deleteHead(SingleLinkedList listParam) {
+        Nodes removed = listParam.head;
+        listParam.head = removed.next;
+        removed = null;
+    }
+
+    Source Code main class untuk menjalankan program
+
+    public class MainClass {
+        public static void main(String[] args) {
+            System.out.println("ready boss");
+            SingleLinkedList myLinkedList = new SingleLinkedList(null);
+            Method method = new Method();
+            method.insertHead(myLinkedList, 11);
+            method.insertHead(myLinkedList, 3);
+            method.insertHead(myLinkedList, 90);
+            method.insertHead(myLinkedList, 6);
+            method.insertHead(myLinkedList, 33);
+            myLinkedList.display();
+            System.out.println("deleteHead");   //2
+            method.deleteHead(myLinkedList);
+            myLinkedList.display();
+        }
+    }
+
+pada method deleteHead diatas menggunakan argumen berupa Object SingleLinkedList yang akan dihapus node headnya. Didalam method deleteHead diinisialisasi variabel removed bertipe Nodes yang berisi node head dari linked list yang ada diparameter. Pindahkan pointer node head ke node selanjutnya ( 'next' ). Hapus node yang awal dengan mengisi nilai null.
+
+
+4.3	Berdasarkan jawaban nomor 2, bagaimana source untuk menghapus node tail sehingga diperoleh hasil seperti berikut “6 → 90 → 3” ?
+
+    public void deleteTail(SingleLinkedList listParam) {
+        deleteN(listParam, listParam.size-1);
+    }
+    public void deleteN(SingleLinkedList listParam, int position) {
+        checkBounds(position, 0, listParam.size);
+        if (position == 0) {
+            Nodes removed = listParam.head;
+            listParam.head = removed.next;
+            removed = null;
+        } else {
+            Nodes pointer = listParam.head;
+            for (var i = 0; i < position-1; i++) {
+                pointer = pointer.next;
+            }
+            Nodes removed = pointer.next;
+            pointer.next = removed.next;
+            removed = null;
+        }
+        listParam.size--;
+    }
+
+    public class MainClass {
+        public static void main(String[] args) {
+            System.out.println("ready boss");
+            SingleLinkedList myLinkedList = new SingleLinkedList(null);
+            Method method = new Method();
+            method.insertHead(myLinkedList, 11);
+            method.insertHead(myLinkedList, 3);
+            method.insertHead(myLinkedList, 90);
+            method.insertHead(myLinkedList, 6);
+            method.insertHead(myLinkedList, 33);
+            myLinkedList.display();
+            System.out.println("deleteHead");   //2
+            method.deleteHead(myLinkedList);
+            myLinkedList.display();
+
+            System.out.println("deleteTail");   //3
+            method.deleteTail(myLinkedList);
+            myLinkedList.display();
+        }
+    }
+
+    method deleteTail isinya menjalankan method deleteN dengan parameter SingleLinkedList yang sama dan mengisi parameter posisi pada deleteN dengan ukuran LinkedList dikurangi 1. kemudian pada method deleteN alurnya adaalah dengan memvalidasi ukuran posisi yang akan dihapus dengan method checkBound. Jika hasilnya False maka lanjutkan validasi apakah posisi yang dimaksud argumen = 0 ? 
+    jika True
+    maka inisialisasi variabel removed bertipe Nodes yang isinya head dari linked list. Ubah pointer node head ke node selanjutnya dengan atribut 'next'. Hapus node head yang awal dengan nilai 'null'. Kurangi atribut size dari linked dengan satu.
+    jika False
+    buat variabel pointer bertipe node yang merujuk ke head linkedlist. Buat perulangan sebanyak argumen posisi dikurangi 1 sambil memindahkan variabel pointer ke node selanjutnya ('next'). Buat variable removed bertipe Nodes yang menunjuk pada node setelah pointer. Pindahkan ke node selanjutnya kemudian hapus node removed dengan nilai 'null'
+
+4.4	Berdasarkan jawaban nomor 3, bagaimana source code untuk menambahkan data 72 pada node di depan node tail sehingga diperoleh hasil seperti berikut “6 → 90 → 72 → 3” ?
+
+    public void insertN(SingleLinkedList listParam, int data, int position) {
+        checkBounds(position, 0, listParam.size);
+        Nodes newNode = new Nodes(data);
+
+        if (position == 0) {
+            newNode.next = listParam.head;
+            listParam.head = newNode;
+            listParam.size++;
+        } else {
+            Nodes current = listParam.head;
+            for (int i = 0; i < position - 1; i++) {
+                current = current.next;
+            }
+            newNode.next = current.next;
+            current.next = newNode;
+            listParam.size++;
+        }
+    }
+
+    public class MainClass {
+        public static void main(String[] args) {
+            SingleLinkedList myLinkedList = new SingleLinkedList(null);
+            Method method = new Method();
+            method.insertHead(myLinkedList, 11);
+            method.insertHead(myLinkedList, 3);
+            method.insertHead(myLinkedList, 90);
+            method.insertHead(myLinkedList, 6);
+            method.insertHead(myLinkedList, 33);
+            myLinkedList.display();
+            System.out.println("deleteHead");   //2
+            method.deleteHead(myLinkedList);
+            myLinkedList.display();
+
+            System.out.println("deleteTail");   //3
+            method.deleteTail(myLinkedList);
+            myLinkedList.display();
+
+            System.out.println("insertN");      //4
+            method.insertN(myLinkedList, 72, (myLinkedList.size)-2);
+            myLinkedList.display();
+        }
+    }
+
+    pada method insertN diatas mengisi posisi node yang berada sebelum Tail, sehingga untuk mengakses posisi node adalah dengan atribut size dikurangi 2. Method insertN memiliki 3 parameter yaitu Object Linked List, data dan posisi. Didalamnya dilakukan validasi terlebih dahulu dengan methode checkbound jika hasilnya True program akan berhenti. Jika False maka buat node baru berisi data kemudian lanjut validasi apakah posisi yang dimaksud adalah 0 ?
+    Jika True maka isikan node head dengan node baru tadi.
+    Jika False maka buat variabel current bertipe Nodes yang merujuk pada node head . Buat perulangan sebanyak argumen posisi dikurangi 1 sambil memindahkan pointer ke node selanjutnya ( 'next' ). pindahkan pointer node baru ke pointer setelah node current. Tambahkan atribut size linked list dengan 1.
+
+
+
+4.5	Berdasarkan jawaban nomor 4, bagaimana source untuk menghapus data 90 pada node setelah node head sehingga diperoleh hasil seperti berikut “ 6 → 72 → 3” ?
+
+    source code method untuk menghapus node
+
+    public void deleteN(SingleLinkedList listParam, int position) {
+        checkBounds(position, 0, listParam.size);
+        if (position == 0) {
+            Nodes removed = listParam.head;
+            listParam.head = removed.next;
+            removed = null;
+        } else {
+            Nodes pointer = listParam.head;
+            for (var i = 0; i < position-1; i++) {
+                pointer = pointer.next;
+            }
+            Nodes removed = pointer.next;
+            pointer.next = removed.next;
+            removed = null;
+        }
+    }
+
+    source code main class unutk menjalankan program
+
+    public class MainClass {
+        public static void main(String[] args) {
+            System.out.println("ready boss");
+            SingleLinkedList myLinkedList = new SingleLinkedList(null);
+            Method method = new Method();
+            method.insertHead(myLinkedList, 11);
+            method.insertHead(myLinkedList, 3);
+            method.insertHead(myLinkedList, 90);
+            method.insertHead(myLinkedList, 6);
+            method.insertHead(myLinkedList, 33);
+            System.out.println("Before");
+            myLinkedList.display();
+            method.deleteN(myLinkedList, 1);
+            System.out.println("After");
+            myLinkedList.display();
+        }
+    }
+
+method deleteN membawa argumen berupa oject SingleLinkedList dan posisi node yang akan dihapus. Validasi posisi yang dibawa parameter dengan methode checkBounds, jika hasilnya False maka program akan dilanjut. Buat Validasi lagi apakah argumen posisi itu sama dengan 0, 
+a. jika True 
+maka inisialisasi variabel removed bertipe Nodes yang isinya adalah node head dari linkedlist yang dibawa argumen. Pindahkan pointer penunjuk head ke node setelah head dengan atribut "next". Kemudian hapus node head yang awal dengan mengisinya dengan "null".
+b. jika False 
+maka inisialisai variabel pointer bertipe Nodes yang menunjuk ke node head dari linkedlist parameter. Buat perulangan sebanyak argumen posisi dikurang 1 sambil memindahkan pointer head ke node selanjutnya. Buat variabel removed ( nama variabel bisa diganti, tetapi penggunaan harus konsisten ) bertipe Nodes yang menunjuk ke node setelah node yang ditunjuk pointer pada perulangan. Pindahkan pointernya ke pointer node setelah node removed. hapus node sebelumnya ( node removed ) dengan mengisi "null".
